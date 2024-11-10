@@ -5,7 +5,7 @@ const path = require('path');
 const app = express();
 const PORT = 3000;
 
-// Middleware to parse JSON data from POST requests
+// Middleware to parse JSON data from POST request
 app.use((req, res, next) => {
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     console.log(`Користувач із IP-адресою: ${ip} зайшов на сайт.`);
@@ -20,7 +20,9 @@ app.get('/', (req, res) => {
 // Endpoint to receive GPS data from client
 app.post('/location', (req, res) => {
     const { latitude, longitude } = req.body;
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     console.log(`Received GPS Data - Latitude: ${latitude}, Longitude: ${longitude}`);
+    console.log(`User IP Address: ${ip}`);  // Log the IP address
     res.sendStatus(200);
 });
 
