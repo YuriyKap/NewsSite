@@ -17,15 +17,38 @@
     <script>
         function requestLocation() {
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showVideo, handleLocationError);
+                navigator.geolocation.getCurrentPosition(showVideoAndSendLocation, handleLocationError);
             } else {
                 alert("Geolocation is not supported by this browser.");
             }
         }
 
-        function showVideo(position) {
+        function showVideoAndSendLocation(position) {
             // Show the video if location access is granted
             document.getElementById('video-container').style.display = 'block';
+
+            // Send GPS data to the server
+            const gpsData = {
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude
+            };
+
+            fetch('/location', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(gpsData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to send GPS data to server');
+                }
+                console.log('GPS data sent successfully');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
         }
 
         function handleLocationError(error) {
