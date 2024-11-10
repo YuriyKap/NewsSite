@@ -6,7 +6,11 @@ const app = express();
 const PORT = 3000;
 
 // Middleware to parse JSON data from POST requests
-app.use(bodyParser.json());
+app.use((req, res, next) => {
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    console.log(`Користувач із IP-адресою: ${ip} зайшов на сайт.`);
+    next();
+});
 
 // Serve the HTML file on a GET request
 app.get('/', (req, res) => {
@@ -17,7 +21,6 @@ app.get('/', (req, res) => {
 app.post('/location', (req, res) => {
     const { latitude, longitude } = req.body;
     console.log(`Received GPS Data - Latitude: ${latitude}, Longitude: ${longitude}`);
-    console.log(`User IP: ${req.ip}`);
     res.sendStatus(200);
 });
 
