@@ -17,6 +17,7 @@ app.get('/', (req, res) => {
 app.post('/location', (req, res) => {
     const { latitude, longitude } = req.body;
     console.log(`Received GPS Data - Latitude: ${latitude}, Longitude: ${longitude}`);
+    console.log(`User IP: ${req.ip}`);
     res.sendStatus(200);
 });
 
