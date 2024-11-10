@@ -6,11 +6,7 @@ const app = express();
 const PORT = 3000;
 
 // Middleware to parse JSON data from POST request
-app.use((req, res, next) => {
-    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    console.log(`Користувач із IP-адресою: ${ip} зайшов на сайт.`);
-    next();
-});
+app.use(bodyParser.json());
 
 // Serve the HTML file on a GET request
 app.get('/', (req, res) => {
